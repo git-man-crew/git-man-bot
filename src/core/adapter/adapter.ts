@@ -1,11 +1,10 @@
 import { Injectable, Logger, Inject, OnModuleInit } from '@nestjs/common';
-import {
-  BotFrameworkAdapter,
-  ConversationState,
-} from 'botbuilder';
+import { BotFrameworkAdapter, ConversationState } from 'botbuilder';
 import { ConfigService } from 'src/config/config.service';
-import { State } from 'src/bot/state/state';
-import { Bot } from 'src/bot/bot';
+import { State } from 'src/core/state/state';
+import { Bot } from 'src/core/bot/bot';
+import { ComponentDialog } from 'botbuilder-dialogs';
+import { IComponentDialog } from 'src/common/shared/dialog-config';
 
 @Injectable()
 export class Adapter implements OnModuleInit {
@@ -14,7 +13,7 @@ export class Adapter implements OnModuleInit {
   @Inject('Bot') private bot: Bot;
 
   private conversationState: ConversationState;
-  private botFrameworkAdapter: BotFrameworkAdapter
+  private botFrameworkAdapter: BotFrameworkAdapter;
 
   onModuleInit() {
     this.conversationState = this.state.getConversationState();
@@ -37,8 +36,12 @@ export class Adapter implements OnModuleInit {
   }
 
   public processActivities(req: any, res: any) {
-    this.botFrameworkAdapter.processActivity(req, res, async (turnContext) => {
+    this.botFrameworkAdapter.processActivity(req, res, async turnContext => {
       await this.bot.onTurn(turnContext);
-  });
+    });
+  }
+
+  public registerDialog(componentDialog: IComponentDialog) {
+    this.bot.registerDialogComponent(componentDialog);
   }
 }

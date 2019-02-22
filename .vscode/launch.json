@@ -7,14 +7,15 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch via NPM",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run",
-                "start:debug"
-            ],
-            "port": 9229
+            "name": "Dialog Creator",
+            "protocol": "inspector",
+            "runtimeVersion": "8.15.0",
+            "args": ["dialog-creator.js"],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         },
+
         {
             "type": "node",
             "request": "launch",

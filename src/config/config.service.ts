@@ -3,6 +3,7 @@ import { EnvConfig } from 'src/common/shared/env-config';
 import { readFileSync } from 'fs';
 import { parse } from 'dotenv';
 import { BotConfiguration, LuisService } from 'botframework-config';
+import { DialogConfig, DialogRoute } from 'src/common/shared/dialog-config';
 
 @Injectable()
 export class ConfigService {
@@ -10,10 +11,12 @@ export class ConfigService {
    * Environment configuration object like special API keys and so on
    */
   private envConfig: EnvConfig;
+  private dialogConfig: DialogConfig;
 
   private botConfig: BotConfiguration;
   constructor(filePath: string) {
     this.envConfig = parse(readFileSync(filePath));
+    this.dialogConfig = JSON.parse(readFileSync('config/dialog-config.json', 'utf8'));
     this.initBotConfiguration();
   }
 
@@ -23,6 +26,10 @@ export class ConfigService {
 
   public findLuisService(LUIS_CONFIGURATION: string): LuisService {
     return this.botConfig.findServiceByNameOrId(LUIS_CONFIGURATION) as LuisService;
+  }
+
+  public findDialogRoute(LUIS_INTENT: string): DialogRoute {
+    return this.dialogConfig[LUIS_INTENT];
   }
 
   private initBotConfiguration() {

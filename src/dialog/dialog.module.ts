@@ -3,6 +3,7 @@ import { ControllersModule } from './controllers/controllers.module';
 import { ViewsModule } from './views/views.module';
 
 @Module({
-  imports: [ControllersModule, ViewsModule]
+  imports: [ControllersModule],
+  exports: [ControllersModule]
 })
 export class DialogModule {}
