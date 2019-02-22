@@ -1,0 +1,25 @@
+{
+    "name": "git-man",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "name": "dev",
+            "endpoint": "http://localhost:3978/api/messages",
+            "appId": "",
+            "appPassword": "",
+            "id": "1"
+        },
+        {
+            "type": "luis",
+            "name": "git-man",
+            "appId": "c3e22d44-785a-40d5-8cd8-52e28c724e80",
+            "version": "0.1",
+            "authoringKey": "0ee4aa828743400b967f41a77fc5341f",
+            "region": "westeurope",
+            "id": "237"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0"
+}

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { EnvConfig } from 'src/common/shared/env-config';
 import { readFileSync } from 'fs';
 import { parse } from 'dotenv';
-import { BotConfiguration } from 'botframework-config';
+import { BotConfiguration, LuisService } from 'botframework-config';
 
 @Injectable()
 export class ConfigService {
@@ -21,10 +21,14 @@ export class ConfigService {
     return this.botConfig.findServiceByNameOrId(BOT_CONFIGURATION);
   }
 
+  public findLuisService(LUIS_CONFIGURATION: string): LuisService {
+    return this.botConfig.findServiceByNameOrId(LUIS_CONFIGURATION) as LuisService;
+  }
+
   private initBotConfiguration() {
     try {
       this.botConfig = BotConfiguration.loadSync(
-        `config/${this.envConfig.botFilePath}`,
+        `${this.envConfig.botFilePath}`,
         process.env.botFileSecret,
       );
     } catch (err) {

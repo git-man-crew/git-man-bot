@@ -23,6 +23,8 @@
     "@nestjs/common": "^5.4.0",
     "@nestjs/core": "^5.4.0",
     "botbuilder": "^4.2.1",
+    "botbuilder-ai": "^4.2.1",
+    "botbuilder-dialogs": "^4.2.1",
     "botframework-config": "^4.2.1",
     "dotenv": "^6.2.0",
     "reflect-metadata": "^0.1.12",

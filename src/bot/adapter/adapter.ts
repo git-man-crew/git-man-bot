@@ -1,35 +1,44 @@
-import { Injectable, Logger } from '@nestjs/common';
-import path = require('path');
-import { BotFrameworkAdapter, ConversationState, MemoryStorage } from 'botbuilder';
+import { Injectable, Logger, Inject, OnModuleInit } from '@nestjs/common';
+import {
+  BotFrameworkAdapter,
+  ConversationState,
+} from 'botbuilder';
 import { ConfigService } from 'src/config/config.service';
-import { BotConfiguration } from 'botframework-config';
+import { State } from 'src/bot/state/state';
+import { Bot } from 'src/bot/bot';
 
 @Injectable()
-export class Adapter {
-  private botConfig: any;
+export class Adapter implements OnModuleInit {
+  @Inject('ConfigService') private configService: ConfigService;
+  @Inject('State') private state: State;
+  @Inject('Bot') private bot: Bot;
+
   private conversationState: ConversationState;
-  constructor(
-      private configService: ConfigService,
-      
-  ) {
+  private botFrameworkAdapter: BotFrameworkAdapter
+
+  onModuleInit() {
+    this.conversationState = this.state.getConversationState();
     const DEV_ENVIRONMENT = 'dev';
     const BOT_CONFIGURATION = process.env.NODE_ENV || DEV_ENVIRONMENT;
-    
-    const endpointConfig = this.configService.findBotConfiguration(BOT_CONFIGURATION);
-    const adapter = new BotFrameworkAdapter({
+
+    const endpointConfig = this.configService.findBotConfiguration(
+      BOT_CONFIGURATION,
+    );
+    this.botFrameworkAdapter = new BotFrameworkAdapter({
       appId: endpointConfig.appId || process.env.microsoftAppID,
       appPassword:
         endpointConfig.appPassword || process.env.microsoftAppPassword,
     });
-    const memoryStorage = new MemoryStorage();
-    this.conversationState = new ConversationState(memoryStorage);
-    adapter.onTurnError = async (context, error) => {
-      // This check writes out errors to console log .vs. app insights.
+    this.botFrameworkAdapter.onTurnError = async (context, error) => {
       Logger.error(`\n [onTurnError]: ${error}`);
-      // Send a message to the user
-      await context.sendActivity(`Oops. Something went wrong!`);
-      // Clear out state
+      await context.sendActivity(`Oops. Etwas ist falsch gelaufen.`);
       await this.conversationState.delete(context);
     };
+  }
+
+  public processActivities(req: any, res: any) {
+    this.botFrameworkAdapter.processActivity(req, res, async (turnContext) => {
+      await this.bot.onTurn(turnContext);
+  });
   }
 }
