@@ -95,7 +95,7 @@ export class Bot implements OnModuleInit {
             break;
           case DialogTurnStatus.complete:
             Logger.log('All child dialogs have ended.');
-            dialogContext.context;
+            dialogContext.context.sendActivity;
             break;
           default:
             Logger.log(

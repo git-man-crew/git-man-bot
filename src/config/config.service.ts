@@ -15,7 +15,7 @@ export class ConfigService {
 
   private botConfig: BotConfiguration;
   constructor(filePath: string) {
-    this.envConfig = parse(readFileSync(filePath));
+    this.envConfig = parse(readFileSync("config/.env"));
     this.dialogConfig = JSON.parse(readFileSync('config/dialog-config.json', 'utf8'));
     this.initBotConfiguration();
   }

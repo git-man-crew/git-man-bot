@@ -3,7 +3,6 @@ import { BotFrameworkAdapter, ConversationState } from 'botbuilder';
 import { ConfigService } from 'src/config/config.service';
 import { State } from 'src/core/state/state';
 import { Bot } from 'src/core/bot/bot';
-import { ComponentDialog } from 'botbuilder-dialogs';
 import { IComponentDialog } from 'src/common/shared/dialog-config';
 
 @Injectable()

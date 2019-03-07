@@ -3,20 +3,7 @@
     // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
     // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Dialog Creator",
-            "protocol": "inspector",
-            "runtimeVersion": "8.15.0",
-            "args": ["dialog-creator.js"],
-            "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
-        },
-
-        {
+    "configurations": [{
             "type": "node",
             "request": "launch",
             "name": "Launch Server",
@@ -28,9 +15,38 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "env": {
+                "NODE_ENV": "dev",
                 "TS_NODE_PROJECT": "tsconfig.json",
                 "TS_NODE_TRANSPILE_ONLY": "true"
             }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest Current File",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": [
+                "${relativeFile}",
+                "--config",
+                "jest.config.js"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Dialog Creator",
+            "protocol": "inspector",
+            "runtimeVersion": "8.15.0",
+            "args": ["dialog-creator.js"],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }
